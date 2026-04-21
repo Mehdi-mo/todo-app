@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>to do</title>
+    <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+</head>
+<body>
+    <a href="/logout/">Logout</a>
+    
+    <h1>tasks list</h1>
+
+    <form action="/" method='POST'>
+        {% csrf_token %}
+        <input type="text" name='body' placeholder='New Task ...' required>
+        <button type='submit'>submit</button>
+    </form>
+
+    <hr>
+
+    
+</body>
+</html>
+
+
+
+{% for task in tasks %}
+         <div>
+
+            <form action="/task/{{task.id}}/toggle/" method='POST'>
+                {% csrf_token %}
+                <input type="checkbox" {% if task.status == 'done' %} checked {% endif %}
+                onchange=this.form.submit()>                
+            </form>
+
+
+            <form method='POST' action='/task/{{task.id}}/edit/' id='edit-form-{{task.id}}'>
+                {% csrf_token %}
+                <input type="text" name="body" value="{{ task.body }}" 
+                onchange="document.getElementById('edit-form-{{task.id}}').submit()">
+            </form>
+
+            
+            <form action="/task/{{task.id}}/delete/" method='POST'>
+                {% csrf_token %}
+                <button>❌</button>
+            </form>
+
+
+        </div>
+        {% empty %}
+        <p>No tasks yet.</p>
+    
+    {% endfor %}

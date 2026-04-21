@@ -1,0 +1,33 @@
+body {
+    font-size: 20px;
+    padding: 30px;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 100px;
+    text-align: center;
+}
+
+input[type="text"] {
+    width: 400px;
+    font-size: 18px;
+    padding: 5px 10px;
+}
+
+button {
+    font-size: 18px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+a {
+    font-size: 18px;
+}
+
+div {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
