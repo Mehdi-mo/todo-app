@@ -7,7 +7,6 @@ from django.views import View
 
 
 class TaskListView(LoginRequiredMixin, View):
-    login_url = '/login/'
 
     def get(self, request):
         tasks = Task.objects.filter(user=request.user).order_by('-status', 'date_time_created')
@@ -46,32 +45,56 @@ class TaskListView(LoginRequiredMixin, View):
 #         'editing_id':editing_id
 #         })
 
-@login_required
-def task_edit(request, task_id):
-    task = get_object_or_404(Task, id=task_id)
-    if request.method == 'POST':
+
+class TaskEditView(LoginRequiredMixin, View):
+
+    def post(self, request, task_id):
+        task = get_object_or_404(Task, id=task_id, user=request.user)
         body = request.POST.get('body')
-        if body:
-            task.body = body 
+        if body : 
+            task.body = body
             task.save()
-    return redirect('/')
+        return redirect('/')
+
+# @login_required
+# def task_edit(request, task_id):
+#     task = get_object_or_404(Task, id=task_id)
+#     if request.method == 'POST':
+#         body = request.POST.get('body')
+#         if body:
+#             task.body = body 
+#             task.save()
+#     return redirect('/')
 
 
-    
 
-@login_required
-def task_delete(request, task_id):
-    task = get_object_or_404(Task, id=task_id)
-    if request.method == 'POST':
+class TaskDeleteView(LoginRequiredMixin, View):
+    def post(self, request, task_id):
+        task = get_object_or_404(Task,id=task_id, user=request.user)  
         task.delete()
-    return redirect('/')
+        return redirect('/')
+
+# @login_required
+# def task_delete(request, task_id):
+#     task = get_object_or_404(Task, id=task_id)
+#     if request.method == 'POST':
+#         task.delete()
+#     return redirect('/')
 
 
-@login_required
-def task_toggle(request, task_id):
-    task = get_object_or_404(Task, id= task_id)
-    if request.method == 'POST':
+class TaskToggleView(LoginRequiredMixin, View):
+    def post(self, request, task_id):
+        task = get_object_or_404(Task, id=task_id, user=request.user)
         task.status = 'done' if task.status == 'pending' else 'pending'
         task.save()
-    return redirect('/')
+        return redirect('/')
+    
+
+# @login_required
+# def task_toggle(request, task_id):
+#     task = get_object_or_404(Task, id= task_id)
+#     if request.method == 'POST':
+#         task.status = 'done' if task.status == 'pending' else 'pending'
+#         task.save()
+#     return redirect('/')
     
