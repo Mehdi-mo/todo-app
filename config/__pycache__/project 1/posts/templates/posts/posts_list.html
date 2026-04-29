@@ -1,0 +1,32 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Posts
+{% endblock title %}
+
+
+{% block content %}
+    <section>
+        <h1>posts</h1>
+        
+        <!-- ADD THIS TO DEBUG -->
+        <p>Number of posts: {{ posts|length }}</p>
+        
+        {% for post in posts %}
+            <article class='post'>
+                <h2>
+                    <a href="{% url 'posts:page' slug=post.slug %}">
+                    {{post.title}}
+                    </a>
+                </h2>
+                <p>{{post.date}} by {{post.author}}</p>
+                <p>{{post.body}}</p>
+            </article>
+        {% empty %}
+            <p>No posts found!</p>  <!-- THIS SHOWS IF LOOP IS EMPTY -->
+        {% endfor %}
+        
+    </section>    
+{% endblock content %}
+
