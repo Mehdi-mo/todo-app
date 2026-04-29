@@ -9,7 +9,7 @@ class TaskListAPI(APIView):
     permission_classes = [IsAuthenticated]
     
     def get(self, request):
-        tasks = Task.objects.filter(user=request.user).order_by('-status','-datetime_created')
+        tasks = Task.objects.filter(user=request.user).order_by('-status','-date_time_created')
         serializer = TaskSerializer(tasks, many=True)
         return Response(serializer.data)
     def post(self, request):
